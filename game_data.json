@@ -1,0 +1,100 @@
+{
+  "intro": [
+    ["HALCYON DYNAMICS // INTERNAL NODE 404", "sys"],
+    ["Establishing secure tunnel ........ OK", "out"],
+    ["Authenticating guest investigator .. OK", "out"],
+    ["WARNING: all activity on this node is logged.", "warn"],
+    ["", "out"],
+    ["CASE #404: Mara Voss, lead sysadmin, has vanished.", "good"],
+    ["You have read access to the company network. Find out who did it.", "out"],
+    ["", "out"],
+    ["Start with:  cat briefing.txt     (type 'help' for all commands)", "sys"]
+  ],
+  "fs": {
+    "home": {
+      "investigator": {
+        "briefing.txt": [
+          "CASE FILE #404", "",
+          "Mara Voss, Halcyon's lead sysadmin, missed her shift three days ago.",
+          "Her phone is off and her apartment is empty.",
+          "A friend says she told them: 'If I disappear, look in the vault.'", "",
+          "SUSPECTS",
+          "  Daniel Kessler   - CFO",
+          "  Tomas Priest     - head of security",
+          "  Elena Ward       - HR director", "",
+          "Explore the system, collect evidence, then run:  accuse <last name>",
+          "Tip: 'notes' shows every clue you have logged so far."
+        ]
+      },
+      "mvoss": {
+        "notes.txt": [
+          "private - do not read", "",
+          "Northgate Consulting is a shell. The payments are all approved by one person.",
+          "I copied the proof into /vault/ledger.enc.",
+          "The key is my cat's name, written backwards.",
+          "(He is asleep on my keyboard as I type this.)"
+        ]
+      }
+    },
+    "mail": {
+      "01_vet.txt": [
+        "From: mara.voss@halcyon", "To: tpriest@halcyon", "Subject: Biscuit's checkup", "",
+        "Vet says Biscuit is fine, just fat. He has been sleeping on my keyboard all week.",
+        "Thanks for covering my on-call, Tomas."
+      ],
+      "02_kessler.txt": [
+        "From: dkessler@halcyon", "To: mvoss@halcyon", "Subject: Vendor audit", "",
+        "Mara - drop the Northgate audit. It is not an IT matter.",
+        "I will handle finance myself. Do not make me escalate this.", "- D.K."
+      ],
+      "03_ward.txt": [
+        "From: eward@halcyon", "To: all-staff@halcyon", "Subject: Leave approvals", "",
+        "Mara's leave request for next month is approved. Nothing unusual.", "- Elena"
+      ],
+      "04_priest.txt": [
+        "From: tpriest@halcyon", "To: security@halcyon", "Subject: Night roster", "",
+        "I am at my SOC desk 18:00-06:00 all week. Camera feeds are archived.", "- T. Priest"
+      ]
+    },
+    "logs": {
+      "auth.log": [
+        "23:58  logout   user=mvoss     host=ws-it-03",
+        "02:14  login    user=dkessler  host=ws-cfo-01   OK",
+        "02:15  admin    user=dkessler  action=REVOKE_ACCESS target=mvoss",
+        "02:16  file     /vault/ledger.enc  copy attempt BLOCKED (key required)",
+        "02:20  login    user=tpriest   host=ws-sec-02   OK (SOC desk)"
+      ],
+      "badge.log": [
+        "17:30  EXIT   eward     main door",
+        "18:00  ENTER  tpriest   SOC (stays on desk)",
+        "02:09  ENTER  dkessler  side entrance (after hours)"
+      ]
+    },
+    "vault": {
+      "ledger.enc": [
+        "DECRYPTED LEDGER - Northgate Consulting",
+        "  Mar  $48,000   approved: D.K.",
+        "  Apr  $51,500   approved: D.K.",
+        "  May  $60,250   approved: D.K.", "",
+        "Registered owner of Northgate: Kessler Holdings LLC",
+        "Mara's last memo: 'He knows I know. I'm going to the police.'"
+      ]
+    }
+  },
+  "locks": { "/vault/ledger.enc": "tiucsib" },
+  "clues": {
+    "/mail/02_kessler.txt": "Kessler ordered Mara to drop the Northgate audit.",
+    "/logs/auth.log": "Kessler logged in at 02:14 and revoked Mara's access at 02:15.",
+    "/logs/badge.log": "Kessler entered after hours at 02:09. Priest and Ward were elsewhere.",
+    "/home/mvoss/notes.txt": "Mara hid proof in the vault. Key = her cat's name, backwards.",
+    "/vault/ledger.enc": "Northgate payments were approved by D.K. and the shell is owned by Kessler Holdings."
+  },
+  "hints": [
+    "Read everything in /mail and /logs. Look for who acted alone, after hours.",
+    "Mara's notes mention a key. Her cat is named in one of the emails.",
+    "Try: unlock /vault/ledger.enc <cat's name spelled backwards>",
+    "Once the ledger is open, run: accuse kessler"
+  ],
+  "culprit": "kessler",
+  "suspects": ["kessler", "priest", "ward"]
+}
